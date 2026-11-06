@@ -9,5 +9,7 @@ jobs:
         env:
           TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
         run: |
-          curl -s "https://api.telegram.org/bot${TOKEN}/getUpdates" \
-            | grep -o '"chat":{"id":-\?[0-9]*[^}]*}' | sort -u
+          res=$(curl -s "https://api.telegram.org/bot${TOKEN}/getUpdates")
+          echo "$res" | grep -q '"ok":true' || { echo "토큰 오류: $(echo "$res" | grep -o '"description":"[^"]*"')"; exit 1; }
+          ids=$(echo "$res" | grep -o '"chat":{"id":-\?[0-9]*[^}]*}' | sort -u)
+          [ -n "$ids" ] && echo "$ids" || echo "아직 봇에게 온 메시지가 없음 - 봇 대화방에서 Start 또는 아무 메시지 전송 필요"
