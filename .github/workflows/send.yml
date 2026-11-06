@@ -12,7 +12,7 @@ jobs:
       - name: 발송
         env:
           TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          CHAT: ${{ secrets.TELEGRAM_CHAT_ID }}
+          CHAT: ${{ secrets.TELEGRAM_CHAT_ID || '7332065233' }}
           TEXT: ${{ inputs.text }}
         run: |
           res=$(curl -s -X POST "https://api.telegram.org/bot${TOKEN}/sendMessage" \
