@@ -1,0 +1,13 @@
+name: 대화방 번호 찾기
+on:
+  workflow_dispatch:
+jobs:
+  find:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 봇에게 온 대화 확인
+        env:
+          TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        run: |
+          curl -s "https://api.telegram.org/bot${TOKEN}/getUpdates" \
+            | grep -o '"chat":{"id":-\?[0-9]*[^}]*}' | sort -u
